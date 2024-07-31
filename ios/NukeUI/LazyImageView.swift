@@ -3,6 +3,7 @@
 // Copyright (c) 2015-2024 Alexander Grebenyuk (github.com/kean).
 
 import Foundation
+import Gifu
 
 #if !os(watchOS)
 
@@ -106,7 +107,7 @@ public final class LazyImageView: _PlatformBaseView {
     /// Returns the underlying image view.
     public let imageView = NSImageView()
 #else
-    public let imageView = UIImageView()
+    public let imageView = Gifu.GIFImageView()
 #endif
 
     /// Creates a custom view for displaying the given image response.
@@ -351,6 +352,11 @@ public final class LazyImageView: _PlatformBaseView {
         } else {
             imageView.image = container.image
             imageView.isHidden = false
+            if (container.type == AssetType.gif) {
+               if let data = container.data {
+                   imageView.animate(withGIFData: data)
+               }
+           }
         }
 
         if !isFromMemory, let transition = transition {
