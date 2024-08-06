@@ -130,3 +130,14 @@ export const clearCache = async () => {
     return FasterImageModule.clearCache();
   }
 };
+
+export const prefetch = async (sources: String[]) => {
+  if (Platform.OS === 'ios') {
+    const { FasterImageViewManager } = NativeModules;
+    return FasterImageViewManager.prefetch(sources);
+  } else {
+    const { FasterImageModule } = NativeModules;
+    return FasterImageModule.prefetch(sources);
+  }
+};
+
